@@ -1,20 +1,21 @@
 class Solution {
   public:
     bool twoSum(vector<int>& arr, int target) {
-        map<int,int> m;
-        int n=arr.size();
-        
-        for(int i=0; i<n; i++){
-            m[arr[i]]++;
-        }
-        
-        for(int i=0; i<n; i++){
-            int sec = target-arr[i];
-            m[arr[i]]--;
-            if(m[sec]>=1)
-                return true;
+        int n = arr.size();
+        int l=0, r=n-1;
+        int sum=0;
+        vector<int> ans;
+        sort(arr.begin(), arr.end());
+        while(l<r){
+            sum = arr[l]+arr[r];
+            if(sum<target)
+                l++;
+            if(sum>target)
+                r--;
+            if(sum==target){
+               return true;
+            }
         }
         return false;
-        
     }
 };
