@@ -1,51 +1,50 @@
 class Solution {
   public:
-  
-    int inversionCount(vector<int> &arr) {
-        int n = arr.size();
-        vector<int> temp(n);
-        int ans = merge_Sort(arr,temp,0,n-1);
-        return ans;
-    }
-    int  merge(vector<int> &arr, vector<int> &temp, int left, int mid,int right)
-    {
-        int  inv_count=0;
-        int  i = left;
-        int  j = mid;
-        int  k = left;
-        while((i <= mid-1) && (j <= right)){
-            if(arr[i] <= arr[j]){
-                temp[k++] = arr[i++];
-            }
-            else
-            {
-                temp[k++] = arr[j++];
-                inv_count = inv_count + (mid - i);
+    int merge(vector<int> &arr, int low, int mid, int high) {
+        vector<int> temp;
+        int left = low;
+        int right = mid + 1;
+        int cnt = 0;
+    
+        while (left <= mid && right <= high) {
+            if (arr[left] <= arr[right]) {
+                temp.push_back(arr[left]);
+                left++;
+            } else {
+                temp.push_back(arr[right]);
+                cnt += (mid - left + 1); 
+                right++;
             }
         }
-        while(i <= mid - 1)
-            temp[k++] = arr[i++];
-    
-        while(j <= right)
-            temp[k++] = arr[j++];
-    
-        for(i = left ; i <= right ; i++)
-            arr[i] = temp[i];
-        
-        return inv_count;
+        while (left <= mid) {
+            temp.push_back(arr[left]);
+            left++;
+        }
+        while (right <= high) {
+            temp.push_back(arr[right]);
+            right++;
+        }
+        for (int i = low; i <= high; i++) {
+            arr[i] = temp[i - low];
+        }
+        return cnt;
     }
     
-    int merge_Sort(vector<int> &arr, vector<int> &temp, int left, int right)
-    {
-        long long int  mid,inv_count = 0;
-        if(right > left)
-        {
-            mid = (left + right)/2;
-            inv_count += merge_Sort(arr,temp,left,mid);
-            inv_count += merge_Sort(arr,temp,mid+1,right);
-            inv_count += merge(arr,temp,left,mid+1,right);
-        }
-        return inv_count;
+    int mergeSort(vector<int> &arr, int low, int high) {
+        int cnt = 0;
+        if (low >= high) 
+            return cnt;
+        int mid = (low + high) / 2;
+    
+        cnt += mergeSort(arr, low, mid);
+        cnt += mergeSort(arr, mid + 1, high);
+        cnt += merge(arr, low, mid, high);
+    
+        return cnt;
     }
 
+    int inversionCount(vector<int> &arr) {
+        int n = arr.size();
+        return mergeSort(arr, 0, n - 1);
+    }
 };
