@@ -1,70 +1,42 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
   public:
-    int kthElement(int k, vector<int>& arr1, vector<int>& arr2) {
-        vector<int> v;
-        int i=0, j=0;
-        int n=arr1.size();
-        int m=arr2.size();
-        
-        while(i<n && j<m){
-            if(arr1[i]<arr2[j]){
-                v.push_back(arr1[i]);
+    int kthElement(vector<int> &a, vector<int> &b, int k) {
+        int c=0;
+        int as = a.size();
+        int bs = b.size();
+        int i=0;
+        int j=0;
+        while(i<as && j<bs && c<k){
+                
+            if(a[i]<=b[j]){
                 i++;
+                c++;
+                if(c==k)
+                    return a[i-1];
             }
-            else if(arr1[i]>=arr2[j]){
-                v.push_back(arr2[j]);
+            else{
                 j++;
+                c++;
+                if(c==k)
+                    return b[j-1];
             }
         }
-        while(i<n){
-            v.push_back(arr1[i]);
-            i++;
+        if(c<k){
+            if(i<as){
+                while(i<as && c<k){
+                    i++;
+                    c++;
+                }
+                return a[i-1];
+            }
+            if(j<bs){
+                while(j<bs && c<k){
+                    j++;
+                    c++;
+                }
+                return b[j-1];
+            }
         }
-        
-        while(j<m){
-            v.push_back(arr2[j]);
-            j++;
-        }
-        return v[k-1];
+        return -1;
     }
 };
-
-//{ Driver Code Starts.
-
-// Driver code
-int main() {
-    int t;
-    cin >> t;
-    cin.ignore();
-    while (t--) {
-        int n, m, k;
-        cin >> k;
-        cin.ignore();
-        string input;
-        int num;
-        vector<int> arr1, arr2;
-
-        getline(cin, input);
-        stringstream s2(input);
-        while (s2 >> num) {
-            arr1.push_back(num);
-        }
-
-        getline(cin, input);
-        stringstream s3(input);
-        while (s3 >> num) {
-            arr2.push_back(num);
-        }
-
-        Solution ob;
-        cout << ob.kthElement(k, arr1, arr2) << endl;
-    }
-    return 0;
-}
-// } Driver Code Ends
