@@ -11,24 +11,25 @@ class Solution {
             if (i > 0 && arr[i] == arr[i - 1]) continue;
             for (int j = i + 1; j < n; j++) {
                 if (j > i + 1 && arr[j] == arr[j - 1]) continue;
-                int left = j + 1, right = n - 1;
-                while (left < right) {
+                int k = j + 1;
+                int l = n - 1;
+                while (k < l) {
                     long long sum = (long long)arr[i] + arr[j] +
-                                    arr[left] + arr[right];
+                                    arr[k] + arr[l];
 
                     if (sum == target) {
                         ans.push_back({arr[i], arr[j],
-                                      arr[left], arr[right]});
+                                      arr[k], arr[l]});
 
-                        while (left < right && arr[left] == arr[left + 1])
-                            left++;
-                        while (left < right && arr[right] == arr[right - 1])
-                            right--;
-                        left++;
-                        right--;
+                        while (k < l && arr[k] == arr[k + 1])
+                            k++;
+                        while (k < l && arr[l] == arr[l - 1])
+                            l--;
+                        k++;
+                        l--;
                     }
-                    else if (sum < target) left++;
-                    else right--;
+                    else if (sum < target) k++;
+                    else l--;
                 }
             }
         }
